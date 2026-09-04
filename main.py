@@ -1,74 +1,51 @@
-"""
-Week 2 Final Project - Starter Code
-Console Application Template
+from data_handler import load_expenses, save_expense
 
-This is a basic structure to get you started. Modify it for your project!
-"""
+def view_expenses():
+    expenses = load_expenses()
+    if not expenses:
+        print("\nNo expenses recorded yet.")
+        return
 
-def display_menu():
-    """
-    Show the main menu to the user.
-    Customize this for your application.
-    """
-    print("\n" + "="*40)
-    print("  My Console Application")
-    print("="*40)
-    print("1. Do something")
-    print("2. Do something else")
-    print("3. Show information")
-    print("help - Show this menu")
-    print("quit - Exit application")
-    print()
+    print("\n--- ALL EXPENSES ---")
+    total = 0.0
+    for category, amount in expenses:
+        print(f"• {category}: ${amount:.2f}")
+        total += amount
+    print(f"--------------------\nTOTAL SPENT: ${total:.2f}")
 
+def add_expense():
+    category = input("Enter category (e.g., Food, Gas, Rent): ").strip()
+    amount_input = input("Enter amount spent ($): ").strip()
 
-def handle_choice(choice):
-    """
-    Process the user's choice and call appropriate functions.
-    
-    Args:
-        choice (str): The user's input
-        
-    Returns:
-        bool: True to continue, False to exit
-    """
-    if choice == "1":
-        print("You chose option 1!")
-        # TODO: Call your function here
-        
-    elif choice == "2":
-        print("You chose option 2!")
-        # TODO: Call your function here
-        
-    elif choice == "3":
-        print("You chose option 3!")
-        # TODO: Call your function here
-        
-    elif choice == "help":
-        display_menu()
-        
-    elif choice == "quit":
-        print("Thanks for using the application. Goodbye!")
-        return False
-        
-    else:
-        print(f"'{choice}' is not a valid option. Type 'help' to see available commands.")
-    
-    return True
-
+    try:
+        amount = float(amount_input)
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+            return
+        save_expense(category, amount)
+    except ValueError:
+        print("Invalid amount. Please enter a valid number.")
 
 def main():
-    """
-    Main application loop.
-    Displays menu, gets user input, processes choices.
-    """
-    print("Welcome to the Console Application!")
-    display_menu()
-    
-    running = True
-    while running:
-        choice = input("Enter your choice: ").strip().lower()
-        running = handle_choice(choice)
+    while True:
+        print("\n========================")
+        print("  DAILY EXPENSE TRACKER  ")
+        print("========================")
+        print("1. View All Expenses & Total")
+        print("2. Add New Expense")
+        print("3. Exit")
 
+        choice = input("Select an option (1-3 or q): ").strip().lower()
+
+        if choice == "1":
+            view_expenses()
+        elif choice == "2":
+            add_expense()
+        elif choice in ["3", "q", "quit", "exit"]:
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
 
 if __name__ == "__main__":
     main()

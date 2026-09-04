@@ -1,0 +1,5 @@
+Food, 12.50
+Gas, 35.00
+Coffee, 4.75
+Red Bulls,50.0
+Taco Bell,250.0
